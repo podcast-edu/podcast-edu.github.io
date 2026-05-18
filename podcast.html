@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="pod cast video youtube conocimiento">
+  <title>Edu Things</title>
+
+  <!-- Open Graph / Facebook / LinkedIn / WhatsApp -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://tudominio.com/">
+  <meta property="og:title" content="Edu Things - Podcast">
+  <meta property="og:description" content="pod cast video youtube conocimiento">
+  <meta property="og:image" content="https://tudominio.com/assets/images/icono.webp">
+
+  <!-- Twitter / X -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:url" content="https://tudominio.com/">
+  <meta name="twitter:title" content="Edu Things - Podcast">
+  <meta name="twitter:description" content="pod cast video youtube conocimiento">
+  <meta name="twitter:image" content="https://tudominio.com/assets/images/icono.webp">
+
+  <link rel="icon" type="image/webp" href="assets/images/icono.webp">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg:         #080C14;
+      --surface:    #0F1623;
+      --surface-2:  #162033;
+      --border:     #1E2A3A;
+      --accent:     #C9A84C;
+      --accent-dim: rgba(201,168,76,.12);
+      --text:       #E8E4DC;
+      --text-2:     #8A96A8;
+      --text-3:     #3D4B5C;
+      --font-display: 'Cormorant Garamond', Georgia, serif;
+      --font-body:    'Outfit', sans-serif;
+      --ease: cubic-bezier(.4,0,.2,1);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      font-weight: 300;
+      line-height: 1.6;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Grain overlay */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 999;
+      opacity: .25;
+    }
+
+    /* ── HEADER ─────────────────────────── */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(8,12,20,.85);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 2rem;
+    }
+    .header-inner {
+      max-width: 1400px;
+      margin: 0 auto;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .logo {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-weight: 600;
+      letter-spacing: .02em;
+      color: var(--text);
+      text-decoration: none;
+    }
+    .logo span { color: var(--accent); }
+
+    nav { display: flex; gap: 2rem; align-items: center; }
+    nav a {
+      color: var(--text-2);
+      text-decoration: none;
+      font-size: .8rem;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      transition: color .25s var(--ease);
+    }
+    nav a:hover { color: var(--accent); }
+
+    /* ── HERO ────────────────────────────── */
+    .hero {
+      padding: 5rem 2rem 4rem;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+    .hero-label {
+      font-size: .72rem;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      color: var(--accent);
+      display: block;
+      margin-bottom: 1rem;
+    }
+    .hero h1 {
+      font-family: var(--font-display);
+      font-size: clamp(2.4rem, 6vw, 5rem);
+      font-weight: 300;
+      line-height: 1.05;
+      letter-spacing: -.02em;
+      max-width: 700px;
+    }
+    .hero h1 em { font-style: italic; color: var(--accent); }
+    .hero-desc {
+      margin-top: 1.5rem;
+      color: var(--text-2);
+      font-size: 1rem;
+      max-width: 480px;
+      line-height: 1.75;
+    }
+
+    /* ── DIVIDER ─────────────────────────── */
+    .divider {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      border-top: 1px solid var(--border);
+    }
+
+    /* ── CONTROLS ────────────────────────── */
+    .controls {
+      padding: 2rem 2rem 2.5rem;
+      max-width: 1400px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      align-items: center;
+    }
+    .search-wrap {
+      position: relative;
+      flex: 1;
+      min-width: 200px;
+      max-width: 380px;
+    }
+    .search-wrap svg {
+      position: absolute;
+      left: .9rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-3);
+      width: 15px;
+      height: 15px;
+      pointer-events: none;
+    }
+    #search {
+      width: 100%;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      padding: .65rem 1rem .65rem 2.6rem;
+      color: var(--text);
+      font-family: var(--font-body);
+      font-size: .875rem;
+      font-weight: 300;
+      outline: none;
+      transition: border-color .25s var(--ease);
+    }
+    #search::placeholder { color: var(--text-3); }
+    #search:focus { border-color: var(--accent); }
+
+    .filters { display: flex; gap: .5rem; flex-wrap: wrap; }
+    .filter-btn {
+      background: transparent;
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      padding: .5rem .95rem;
+      color: var(--text-2);
+      font-family: var(--font-body);
+      font-size: .75rem;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all .25s var(--ease);
+    }
+    .filter-btn:hover { border-color: var(--text-2); color: var(--text); }
+    .filter-btn.active { background: var(--accent); border-color: var(--accent); color: #000; font-weight: 500; }
+    .count-badge { margin-left: .35rem; font-size: .67rem; opacity: .6; }
+
+    /* ── GRID ────────────────────────────── */
+    .grid-section {
+      padding: 0 2rem 6rem;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+    .episodes-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 1.5px;
+      background: var(--border);
+    }
+
+    /* ── CARD ────────────────────────────── */
+    .card {
+      background: var(--surface);
+      cursor: pointer;
+      transition: background .25s var(--ease);
+      animation: fadeUp .45s both;
+      position: relative;
+      overflow: hidden;
+    }
+    .card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border: 1.5px solid transparent;
+      transition: border-color .25s var(--ease);
+      pointer-events: none;
+      z-index: 2;
+    }
+    .card:hover { background: var(--surface-2); }
+    .card:hover::after { border-color: var(--accent); }
+    .card:hover .card-thumb img { transform: scale(1.04); }
+    .card:hover .play-icon { opacity: 1; transform: translate(-50%,-50%) scale(1); }
+
+    .card-thumb {
+      position: relative;
+      aspect-ratio: 16/9;
+      overflow: hidden;
+      background: var(--surface-2);
+    }
+    .card-thumb img {
+      width: 100%; height: 100%;
+      object-fit: cover; display: block;
+      transition: transform .5s var(--ease);
+    }
+    .play-icon {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%,-50%) scale(.8);
+      width: 52px; height: 52px;
+      background: rgba(201,168,76,.92);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0;
+      transition: all .3s var(--ease);
+      z-index: 1;
+    }
+    .play-icon svg { width: 20px; height: 20px; fill: #000; margin-left: 3px; }
+
+    .ep-number {
+      position: absolute;
+      top: .75rem; left: .75rem;
+      background: rgba(8,12,20,.85);
+      backdrop-filter: blur(8px);
+      padding: .2rem .6rem;
+      font-size: .67rem;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--accent);
+      z-index: 1;
+    }
+    .duration-badge {
+      position: absolute;
+      bottom: .75rem; right: .75rem;
+      background: rgba(8,12,20,.85);
+      backdrop-filter: blur(8px);
+      padding: .18rem .5rem;
+      font-size: .68rem;
+      color: var(--text-2);
+      z-index: 1;
+    }
+
+    .card-body { padding: 1.25rem 1.5rem 1.6rem; }
+    .card-meta { display: flex; align-items: center; gap: .75rem; margin-bottom: .55rem; }
+    .card-date { font-size: .7rem; color: var(--text-3); letter-spacing: .06em; text-transform: uppercase; }
+    .card-tag {
+      font-size: .66rem; letter-spacing: .09em; text-transform: uppercase;
+      color: var(--accent);
+      border: 1px solid rgba(201,168,76,.3);
+      padding: .08rem .45rem;
+    }
+    .card-tag.secondary {
+      color: var(--text-2);
+      border-color: var(--border);
+    }
+    .card-tag.tag-filter {
+      cursor: pointer;
+      position: relative;
+      z-index: 5;
+      transition: all .2s var(--ease);
+    }
+    .card-tag.tag-filter:hover {
+      color: var(--text);
+      border-color: var(--text-2);
+    }
+    .card h2 {
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      font-weight: 400;
+      line-height: 1.25;
+      color: var(--text);
+      margin-bottom: .55rem;
+      letter-spacing: .01em;
+    }
+    .card p {
+      font-size: .84rem;
+      color: var(--text-2);
+      line-height: 1.65;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    /* ── EMPTY STATE ─────────────────────── */
+    .empty-state {
+      background: var(--surface);
+      grid-column: 1/-1;
+      padding: 5rem 2rem;
+      text-align: center;
+      color: var(--text-3);
+    }
+    .empty-state p {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-weight: 300;
+      font-style: italic;
+    }
+
+    /* ── MODAL ───────────────────────────── */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(4,7,13,.92);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      z-index: 500;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .3s var(--ease);
+    }
+    .modal-overlay.open { opacity: 1; pointer-events: all; }
+
+    .modal {
+      width: 100%;
+      max-width: 720px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      transform: translateY(20px) scale(.98);
+      transition: transform .3s var(--ease);
+    }
+    .modal-overlay.open .modal { transform: translateY(0) scale(1); }
+
+    .modal-header {
+      padding: 1rem 1.5rem;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border);
+      gap: 1rem;
+    }
+    .modal-ep {
+      font-size: .68rem;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      display: block;
+      margin-bottom: .2rem;
+    }
+    .modal-title {
+      font-family: var(--font-display);
+      font-size: 1.4rem;
+      font-weight: 400;
+      color: var(--text);
+    }
+    .modal-close {
+      background: none;
+      border: 1px solid var(--border);
+      color: var(--text-2);
+      cursor: pointer;
+      padding: .4rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: all .25s var(--ease);
+    }
+    .modal-close:hover { border-color: var(--accent); color: var(--accent); }
+    .modal-close svg { width: 18px; height: 18px; }
+
+    .video-wrap { position: relative; aspect-ratio: 16/9; background: #000; }
+    .video-wrap iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: none; }
+
+    /* Botón cerrar flotante — sólo visible en landscape móvil */
+    .landscape-close {
+      display: none;
+      position: absolute;
+      top: .75rem;
+      right: .75rem;
+      z-index: 20;
+      width: 44px; height: 44px;
+      background: rgba(8,12,20,.75);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 1px solid rgba(255,255,255,.15);
+      border-radius: 50%;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: #fff;
+      transition: background .2s;
+    }
+    .landscape-close:hover { background: rgba(201,168,76,.8); }
+    .landscape-close svg { width: 18px; height: 18px; }
+
+    .modal-body {
+      padding: 1.25rem 1.5rem 1.5rem;
+      display: flex;
+      gap: 2rem;
+      align-items: flex-start;
+    }
+    .modal-desc { flex: 1; font-size: .875rem; color: var(--text-2); line-height: 1.75; }
+    .modal-meta {
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      gap: .35rem;
+      align-items: flex-end;
+    }
+    .modal-meta span { font-size: .72rem; color: var(--text-3); letter-spacing: .05em; }
+
+    /* ── FOOTER ──────────────────────────── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 2rem;
+      text-align: center;
+    }
+    footer p { font-size: .72rem; color: var(--text-3); letter-spacing: .05em; }
+    footer a { color: var(--accent); text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+
+    /* ── ANIMATIONS ──────────────────────── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(14px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── RESPONSIVE ──────────────────────── */
+    @media (max-width: 900px) {
+      .episodes-grid { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); }
+    }
+
+    @media (max-width: 640px) {
+      /* Layout general */
+      .hero { padding: 2.5rem 1.25rem 2rem; }
+      .controls { padding: 1.25rem 1.25rem 1.5rem; flex-direction: column; align-items: stretch; }
+      .search-wrap { max-width: 100%; }
+      .grid-section { padding: 0 0 4rem; }
+      nav { display: none; }
+
+      /* Input: font-size 16px mínimo para evitar zoom automático en iOS */
+      #search { font-size: 1rem; padding: .75rem 1rem .75rem 2.75rem; }
+
+      /* Grid en columna única sin bordes laterales */
+      .episodes-grid { grid-template-columns: 1fr; }
+
+      /* Card en mobile: layout horizontal si el título es corto */
+      .card-body { padding: 1rem 1.25rem 1.25rem; }
+      .card h2 { font-size: 1.1rem; }
+
+      /* Modal: pantalla completa en móvil */
+      .modal-overlay { padding: 0; align-items: flex-end; background: rgba(4,7,13,.97); }
+      .modal {
+        max-height: 96dvh;
+        display: flex;
+        flex-direction: column;
+        border-bottom: none;
+        border-left: none;
+        border-right: none;
+        border-radius: 12px 12px 0 0;
+        overflow: hidden;
+      }
+      .modal-header { padding: .85rem 1.25rem; flex-shrink: 0; }
+      .modal-title { font-size: 1.1rem; }
+
+      /* Video fijo arriba, info scrollable abajo */
+      .video-wrap { flex-shrink: 0; }
+      .modal-body {
+        flex-direction: column;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        padding: 1rem 1.25rem 2rem;
+        gap: .75rem;
+      }
+      .modal-meta { flex-direction: row; align-items: center; gap: 1rem; }
+      .modal-meta span { font-size: .72rem; }
+
+      /* Botón cerrar más grande para toque cómodo */
+      .modal-close { padding: .6rem; }
+
+      /* Filtros: scroll horizontal en mobile */
+      .filters { flex-wrap: nowrap; overflow-x: auto; padding-bottom: .25rem; }
+      .filters::-webkit-scrollbar { display: none; }
+      .filter-btn { flex-shrink: 0; }
+    }
+
+    @media (max-width: 420px) {
+      .hero h1 { font-size: 1.9rem; }
+      .hero-desc { font-size: .9rem; }
+    }
+
+    /* ── LANDSCAPE FULLSCREEN (móvil en horizontal) ─── */
+    /* Se activa en teléfonos girados: landscape + altura pequeña */
+    @media (orientation: landscape) and (max-height: 520px) {
+      /* El modal ocupa toda la pantalla */
+      .modal-overlay.open {
+        padding: 0;
+        background: #000;
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+      }
+      .modal-overlay.open .modal {
+        max-height: 100dvh;
+        height: 100dvh;
+        width: 100vw;
+        border: none;
+        border-radius: 0;
+        /* Anular la animación bottom-sheet del mobile portrait */
+        transform: none !important;
+        transition: none;
+        display: flex;
+        flex-direction: column;
+      }
+      /* Ocultar cabecera y descripción — sólo queda el video */
+      .modal-overlay.open .modal-header { display: none; }
+      .modal-overlay.open .modal-body   { display: none; }
+      /* El video llena el espacio disponible */
+      .modal-overlay.open .video-wrap {
+        flex: 1;
+        aspect-ratio: unset;
+      }
+      /* Mostrar el botón flotante de cerrar */
+      .modal-overlay.open .landscape-close { display: flex; }
+    }
+
+    /* Animación de entrada del modal en mobile (sube desde abajo) */
+    @media (max-width: 640px) {
+      .modal {
+        transform: translateY(100%);
+        transition: transform .35s var(--ease);
+      }
+      .modal-overlay.open .modal {
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <div class="header-inner">
+      <a href="#" class="logo">Edu things<span>.</span>Podcast</a>
+      <nav>
+        <a href="#episodios">Episodios</a>
+        <a href="#acerca">Acerca</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero">
+    <span class="hero-label">Video Podcast</span>
+    <h1>Edu<em>Things</em> </h1>
+    <p class="hero-desc">
+      Comparto experiencias, conocimiento, esperanza y motivación.
+    </p>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- CONTROLS -->
+  <div class="controls" id="episodios">
+    <div class="search-wrap">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+      </svg>
+      <input type="text" id="search" placeholder="Buscar episodio…" autocomplete="off" spellcheck="false">
+   
+    </div>
+    
+    <!-- Botones de categoría: aparecen automáticamente cuando añadas categorías a los episodios -->
+    <div class="filters" id="filters">
+      
+    </div>
+  </div>
+
+  <!-- GRID -->
+  <main class="grid-section">
+    <div class="episodes-grid" id="grid"></div>
+  </main>
+
+  <!-- MODAL DE REPRODUCCIÓN -->
+  <div class="modal-overlay" id="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="modal">
+      <div class="modal-header">
+        <div>
+          <span class="modal-ep" id="modal-ep"></span>
+          <h2 class="modal-title" id="modal-title"></h2>
+        </div>
+        <button class="modal-close" id="modal-close" aria-label="Cerrar">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path d="M18 6 6 18M6 6l12 12"/>
+          </svg>
+        </button>
+      </div>
+      <div class="video-wrap">
+        <iframe id="modal-iframe" allowfullscreen
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share">
+        </iframe>
+        <!-- Botón cerrar flotante: sólo aparece en landscape móvil -->
+        <button class="landscape-close" id="landscape-close" aria-label="Cerrar vídeo">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path d="M18 6 6 18M6 6l12 12"/>
+          </svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p class="modal-desc" id="modal-desc"></p>
+        <div class="modal-meta">
+          <span id="modal-date"></span>
+          <span id="modal-duration"></span>
+          <div id="modal-tags" style="display: flex; gap: 0.4rem; flex-wrap: wrap; justify-content: flex-end; margin-top: 0.2rem;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>© 2025 Nombre del Podcast &mdash; Todos los episodios en <a href="https://youtube.com/@tucanal" target="_blank" rel="noopener">YouTube</a></p>
+  </footer>
+
+
+  <script>
+    // ════════════════════════════════════════════════════════
+    //  DATOS  ── Añade cada episodio nuevo aquí como un objeto
+    // ════════════════════════════════════════════════════════
+    const EPISODES = [
+      {
+        id: 1,
+        title: "Título del primer episodio",
+        description: "En este primer episodio de su pódcast, Eduardo Cabrera reflexiona sobre la importancia de perseguir los sueños sin permitir que el miedo o el paso del tiempo actúen como impedimentos. El autor defiende que la acción constante es la única herramienta eficaz para superar la parálisis emocional y los juicios ajenos que suelen frenar el potencial humano. ",
+        youtubeId: "t2Va2Wd9s30",   // ← REEMPLAZA con el ID de tu video de YouTube
+        date: "2025-05-15",          // formato YYYY-MM-DD
+        duration: "45:00",
+        category: "existencial",                // ej: "Entrevista" | "Solo" | "Mesa redonda"
+        tags: ["youtube","prueba"],                    // ej: ["tecnología", "startups"]
+      },
+      {
+        id: 2,
+        title: "Título del segundo episodio",
+        description: "Descripción del episodio. Explica de qué va, qué aprenderá o descubrirá el oyente, y por qué merece la pena verlo. Puedes ser tan extenso como quieras aquí.",
+        youtubeId: "dQw4w9WgXcQ",   // ← REEMPLAZA con el ID de tu video de YouTube
+        date: "2025-05-15",          // formato YYYY-MM-DD
+        duration: "45:00",
+        category: "debate",                // ej: "Entrevista" | "Solo" | "Mesa redonda"
+        tags: ["prueba"],                    // ej: ["tecnología", "startups"]
+      },
+      // {
+      //   id: x,
+      //   title: "...",
+      //   description: "...",
+      //   youtubeId: "TU_ID_AQUI",
+      //   date: "2025-05-22",
+      //   duration: "38:00",
+      //   category: "",
+      //   tags: [],
+      // },
+    ];
+
+    // ════════════════════════════════════════════════════════
+    //  ESTADO
+    // ════════════════════════════════════════════════════════
+    let activeFilter = 'todos';
+    let searchQuery  = '';
+
+    // ════════════════════════════════════════════════════════
+    //  UTILS
+    // ════════════════════════════════════════════════════════
+    const fmt = d => new Date(d + 'T00:00:00')
+      .toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
+
+    const thumb = id => `https://img.youtube.com/vi/${id}/maxresdefault.jpg`;
+
+    const categories = () => [...new Set(EPISODES.map(e => e.category).filter(Boolean))];
+
+    // ════════════════════════════════════════════════════════
+    //  FILTRADO
+    // ════════════════════════════════════════════════════════
+    function getFiltered() {
+      const q = searchQuery.toLowerCase().trim();
+      return EPISODES.filter(ep => {
+        const okCat = activeFilter === 'todos' || ep.category === activeFilter;
+        const okQ   = !q
+          || String(ep.id).includes(q)
+          || ep.title.toLowerCase().includes(q)
+          || ep.description.toLowerCase().includes(q)
+          || (ep.tags || []).some(t => t.toLowerCase().includes(q));
+        return okCat && okQ;
+      });
+    }
+
+    // ════════════════════════════════════════════════════════
+    //  RENDER FILTROS
+    //  (Sólo aparece el botón "Todos" hasta que añadas categorías)
+    // ════════════════════════════════════════════════════════
+    function renderFilters() {
+      const cats    = categories();
+      const filtersEl = document.getElementById('filters');
+
+      if (!cats.length) { filtersEl.style.display = 'none'; return; }
+
+      filtersEl.style.display = 'flex';
+      const all = [{ key: 'todos', label: 'Todos' }, ...cats.map(c => ({ key: c, label: c }))];
+
+      filtersEl.innerHTML = all.map(f => {
+        const count = f.key === 'todos'
+          ? EPISODES.length
+          : EPISODES.filter(e => e.category === f.key).length;
+        return `<button class="filter-btn ${activeFilter === f.key ? 'active' : ''}"
+                        data-filter="${f.key}">
+          ${f.label}<span class="count-badge">${count}</span>
+        </button>`;
+      }).join('');
+
+      filtersEl.querySelectorAll('.filter-btn').forEach(btn =>
+        btn.addEventListener('click', () => {
+          activeFilter = btn.dataset.filter;
+          renderFilters();
+          renderGrid();
+        })
+      );
+    }
+
+    // ════════════════════════════════════════════════════════
+    //  RENDER GRID
+    // ════════════════════════════════════════════════════════
+    function renderGrid() {
+      const grid     = document.getElementById('grid');
+      const filtered = getFiltered();
+
+      if (!filtered.length) {
+        grid.innerHTML = `<div class="empty-state"><p>No se encontraron episodios.</p></div>`;
+        return;
+      }
+
+      grid.innerHTML = filtered.map((ep, i) => `
+        <article class="card" data-id="${ep.id}" style="animation-delay:${i * .05}s" tabindex="0" role="button" aria-label="Ver ${ep.title}">
+          <div class="card-thumb">
+            <img src="${thumb(ep.youtubeId)}" alt="${ep.title}" loading="lazy">
+            <span class="ep-number">EP ${String(ep.id).padStart(2,'0')}</span>
+            ${ep.duration ? `<span class="duration-badge">${ep.duration}</span>` : ''}
+            <div class="play-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="card-meta" style="flex-wrap: wrap;">
+              <span class="card-date">${fmt(ep.date)}</span>
+              ${ep.category ? `<span class="card-tag">${ep.category}</span>` : ''}
+              ${(ep.tags || []).map(t => `<span class="card-tag secondary tag-filter" data-tag="${t}">${t}</span>`).join('')}
+            </div>
+            <h2>${ep.title}</h2>
+            <p>${ep.description}</p>
+          </div>
+        </article>
+      `).join('');
+
+      grid.querySelectorAll('.card').forEach(card => {
+        const open = () => {
+          const ep = EPISODES.find(e => e.id === parseInt(card.dataset.id));
+          if (ep) openModal(ep);
+        };
+        card.addEventListener('click', open);
+        card.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') open(); });
+      });
+
+      grid.querySelectorAll('.tag-filter').forEach(tagEl => {
+        tagEl.addEventListener('click', e => {
+          e.stopPropagation();
+          const tag = tagEl.dataset.tag;
+          searchQuery = tag;
+          document.getElementById('search').value = tag;
+          renderGrid();
+        });
+      });
+    }
+
+    // ════════════════════════════════════════════════════════
+    //  MODAL
+    // ════════════════════════════════════════════════════════
+    function openModal(ep) {
+      document.getElementById('modal-ep').textContent    = `Episodio ${String(ep.id).padStart(2,'0')}`;
+      document.getElementById('modal-title').textContent = ep.title;
+      document.getElementById('modal-desc').textContent  = ep.description;
+      document.getElementById('modal-date').textContent  = fmt(ep.date);
+      document.getElementById('modal-duration').textContent = ep.duration || '';
+      
+      const modalTags = document.getElementById('modal-tags');
+      modalTags.innerHTML = (ep.tags || []).map(t => `<span class="card-tag secondary tag-filter" data-tag="${t}">${t}</span>`).join('');
+
+      modalTags.querySelectorAll('.tag-filter').forEach(tagEl => {
+        tagEl.addEventListener('click', e => {
+          e.stopPropagation();
+          closeModal();
+          const tag = tagEl.dataset.tag;
+          searchQuery = tag;
+          document.getElementById('search').value = tag;
+          renderGrid();
+        });
+      });
+
+      document.getElementById('modal-iframe').src =
+        `https://www.youtube.com/embed/${ep.youtubeId}?autoplay=1&rel=0&modestbranding=1`;
+      document.getElementById('modal').classList.add('open');
+      document.body.style.overflow = 'hidden';
+      // Actualiza la URL para que sea compartible directamente
+      history.replaceState(null, '', `?id=${ep.id}`);
+    }
+
+    function closeModal() {
+      document.getElementById('modal').classList.remove('open');
+      document.getElementById('modal-iframe').src = '';
+      document.body.style.overflow = '';
+      // Limpia la URL al cerrar
+      history.replaceState(null, '', window.location.pathname);
+    }
+
+    document.getElementById('modal-close').addEventListener('click', closeModal);
+    document.getElementById('landscape-close').addEventListener('click', closeModal);
+    document.getElementById('modal').addEventListener('click', e => {
+      if (e.target === document.getElementById('modal')) closeModal();
+    });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+    // ════════════════════════════════════════════════════════
+    //  BÚSQUEDA  (con debounce para no disparar en cada tecla)
+    // ════════════════════════════════════════════════════════
+    let searchTimer;
+    document.getElementById('search').addEventListener('input', e => {
+      clearTimeout(searchTimer);
+      searchTimer = setTimeout(() => {
+        searchQuery = e.target.value;
+        renderGrid();
+      }, 200);
+    });
+
+    // ════════════════════════════════════════════════════════
+    //  ORIENTACIÓN  ── Gestión del giro de pantalla en móvil
+    // ════════════════════════════════════════════════════════
+    function onOrientationChange() {
+      // Esperar a que el navegador termine de recalcular dimensiones
+      setTimeout(() => {
+        const isPortrait = window.innerHeight > window.innerWidth;
+        const modalOpen  = document.getElementById('modal').classList.contains('open');
+
+        if (modalOpen && isPortrait) {
+          // Volvimos a portrait: scroll al inicio del contenido del modal
+          const modalBody = document.querySelector('.modal-body');
+          if (modalBody) modalBody.scrollTop = 0;
+        }
+      }, 200);
+    }
+
+    // screen.orientation es más fiable en Android Chrome
+    if (window.screen && window.screen.orientation) {
+      window.screen.orientation.addEventListener('change', onOrientationChange);
+    } else {
+      // Fallback para Safari y navegadores antiguos
+      window.addEventListener('orientationchange', onOrientationChange);
+    }
+
+    // ════════════════════════════════════════════════════════
+    //  INIT
+    // ════════════════════════════════════════════════════════
+    renderFilters();
+    renderGrid();
+
+    // ════════════════════════════════════════════════════════
+    //  DEEP LINK  ── ?id=1 abre el episodio directamente
+    // ════════════════════════════════════════════════════════
+    const params = new URLSearchParams(window.location.search);
+    const deepId = parseInt(params.get('id'));
+    if (deepId) {
+      const ep = EPISODES.find(e => e.id === deepId);
+      if (ep) openModal(ep);
+    }
+  </script>
+
+</body>
+</html>
