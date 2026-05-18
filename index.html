@@ -178,6 +178,12 @@
 
     /* ── CONTROLS ────────────────────────── */
     .controls {
+      position: sticky;
+      top: 65px; /* Altura del header */
+      z-index: 90;
+      background: rgba(8, 12, 20, 0.95);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
       padding: 2rem 2rem 2.5rem;
       max-width: 1400px;
       margin: 0 auto;
@@ -986,6 +992,21 @@
 
     const categories = () => [...new Set(EPISODES.map(e => e.category).filter(Boolean))];
 
+    function scrollToGrid() {
+      // Pequeño retardo para asegurar que el DOM ha terminado de repintar los cards
+      setTimeout(() => {
+        const gridSection = document.querySelector('.grid-section');
+        const controls = document.getElementById('episodios');
+        if (gridSection && controls) {
+          // Calculamos la posición absoluta de la sección del grid
+          const absoluteY = gridSection.getBoundingClientRect().top + window.scrollY;
+          // Restamos la altura de la cabecera (65) y la de la zona de controles para que quede justo debajo
+          const targetY = absoluteY - 65 - controls.offsetHeight;
+          window.scrollTo({ top: targetY, behavior: 'smooth' });
+        }
+      }, 50);
+    }
+
     // ════════════════════════════════════════════════════════
     //  FILTRADO
     // ════════════════════════════════════════════════════════
@@ -1033,6 +1054,7 @@
           document.getElementById('search').value = '';
           renderFilters();
           renderGrid();
+          scrollToGrid();
         })
       );
     }
@@ -1089,6 +1111,7 @@
           activeFilter = 'todos';
           renderFilters();
           renderGrid();
+          scrollToGrid();
         });
       });
 
@@ -1100,6 +1123,7 @@
           document.getElementById('search').value = '';
           renderFilters();
           renderGrid();
+          scrollToGrid();
         });
       });
     }
@@ -1127,6 +1151,7 @@
           activeFilter = 'todos';
           renderFilters();
           renderGrid();
+          scrollToGrid();
         });
       });
 
