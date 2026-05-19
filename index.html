@@ -314,6 +314,8 @@
       animation: fadeUp .45s both;
       position: relative;
       overflow: hidden;
+      display: flex;
+      flex-direction: column;
     }
 
     .card::after {
@@ -409,7 +411,10 @@
     }
 
     .card-body {
-      padding: 1.25rem 1.5rem 1.6rem;
+      padding: 1.25rem 1.5rem 1rem;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
     }
 
     .card-meta {
@@ -468,11 +473,30 @@
       font-size: .84rem;
       color: var(--text-2);
       line-height: 1.65;
-      display: -webkit-box;
-      -webkit-line-clamp: 3;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
+      max-height: 5.5rem;
+      overflow-y: auto;
+      margin-bottom: 0.5rem;
     }
+
+    /* Scrollbar personalizada para la descripción */
+    .card p::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    .card p::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 4px;
+    }
+
+    .card p::-webkit-scrollbar-thumb {
+      background: var(--text-2);
+      border-radius: 4px;
+    }
+
+    .card p::-webkit-scrollbar-thumb:hover {
+      background: var(--accent);
+    }
+
 
     .donate-btn {
       display: inline-flex;
@@ -487,9 +511,10 @@
       text-decoration: none;
       transition: all .25s var(--ease);
       border: 1px solid var(--accent);
-      margin-top: 1rem;
+      margin-top: auto;
       text-transform: uppercase;
       letter-spacing: .05em;
+      align-self: flex-start;
     }
 
     .donate-btn:hover {
@@ -795,7 +820,7 @@
 
       /* Card en mobile: layout horizontal si el título es corto */
       .card-body {
-        padding: 1rem 1.25rem 1.25rem;
+        padding: 1rem 1.25rem 1rem;
       }
 
       .card h2 {
@@ -1124,9 +1149,9 @@
         id: 1,
         title: "EP01: Reflexión personal sobre la trascendencia",
         description: "En este primer episodio de su pódcast, Eduardo Cabrera reflexiona sobre la importancia de perseguir los sueños sin permitir que el miedo o el paso del tiempo actúen como impedimentos. El autor defiende que la acción constante es la única herramienta eficaz para superar la parálisis emocional y los juicios ajenos que suelen frenar el potencial humano. ",
-        youtubeId: "t2Va2Wd9s30",   // ← REEMPLAZA con el ID de tu video de YouTube
+        youtubeId: "gIlNrDUX76g",   // ← REEMPLAZA con el ID de tu video de YouTube
         date: "2025-05-15",          // formato YYYY-MM-DD
-        duration: "45:00",
+        duration: "06:55",
         category: "episodios",                // ej: "Entrevista" | "Solo" | "Mesa redonda"
         tags: ["Episodio y debate EP01", "existencial"],                 // ej: ["tecnología", "startups"]
       },
@@ -1134,11 +1159,21 @@
         id: 2,
         title: "EP02: Debate sobre episodio EP01",
         description: "En este episodio, Se debate sobre el episodio 01 de Euardo Cabrera sobre la importancia de perseguir los sueños sin permitir que el miedo o el paso del tiempo actúen como impedimentos. El autor defiende que la acción constante es la única herramienta eficaz para superar la parálisis emocional y los juicios ajenos que suelen frenar el potencial humano. ",
-        youtubeId: "dQw4w9WgXcQ",   // ← REEMPLAZA con el ID de tu video de YouTube
+        youtubeId: "NZo4xYuSEPE",   // ← REEMPLAZA con el ID de tu video de YouTube
         date: "2025-05-15",          // formato YYYY-MM-DD
-        duration: "45:00",
+        duration: "06:40",
         category: "debates",                // ej: "Entrevista" | "Solo" | "Mesa redonda"
         tags: ["Episodio y debate EP01"],                    // ej: ["tecnología", "startups"]
+      },
+       {
+        id: 3,
+        title: "EP03: El Planeta Azul",
+        description: "describe la naturaleza excepcional de la Tierra como un 'planeta azul' cuya abundancia de agua contradice las leyes de su formación inicial. El autor explica que el vital líquido surgió de una combinación mixta de fuentes externas, como el bombardeo de asteroides, y procesos internos de desgasificación volcánica desde el manto terrestre. Además, se destaca cómo el campo magnético y la gravedad actúan como escudos fundamentales para retener la atmósfera y proteger la vida de la radiación solar. La narrativa integra la producción de oxígeno por parte de los océanos y bosques para subrayar el equilibrio perfecto del ecosistema global. Finalmente, el escrito reflexiona sobre si estas condiciones son simples coincidencias astronómicas o el resultado de un diseño divino para albergar a la humanidad ",
+        youtubeId: "gIlNrDUX76g",   // ← REEMPLAZA con el ID de tu video de YouTube
+        date: "2025-05-15",          // formato YYYY-MM-DD
+        duration: "09:49",
+        category: "episodios",                // ej: "Entrevista" | "Solo" | "Mesa redonda"
+        tags: ["Episodio y debate EP03", "documental"],                 // ej: ["tecnología", "startups"]
       },
       // {
       //   id: x,
