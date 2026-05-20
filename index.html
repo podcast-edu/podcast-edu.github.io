@@ -5,6 +5,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="pod cast video youtube conocimiento">
+  
+  <!-- Evita que el navegador use una versión antigua del HTML en caché -->
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+
   <title>Edu Things</title>
 
   <!-- Open Graph / Facebook / LinkedIn / WhatsApp -->
@@ -39,6 +45,7 @@
       --text: #E8E4DC;
       --text-2: #8A96A8;
       --text-3: #3D4B5C;
+      --header-height: 64px;
       --font-display: 'Cormorant Garamond', Georgia, serif;
       --font-body: 'Outfit', sans-serif;
       --ease: cubic-bezier(.4, 0, .2, 1);
@@ -92,7 +99,7 @@
     .header-inner {
       max-width: 1400px;
       margin: 0 auto;
-      height: 64px;
+      height: var(--header-height);
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -200,7 +207,7 @@
     /* ── CONTROLS ────────────────────────── */
     .controls {
       position: sticky;
-      top: 65px; /* Altura del header */
+      top: var(--header-height);
       z-index: 90;
       background: rgba(8, 12, 20, 0.95);
       backdrop-filter: blur(10px);
@@ -297,6 +304,51 @@
       padding: 0 2rem 6rem;
       max-width: 1400px;
       margin: 0 auto;
+      scroll-margin-top: calc(var(--header-height) + 120px);
+    }
+
+    .about-section {
+      padding: 4rem 2rem 6rem;
+      max-width: 1400px;
+      margin: 0 auto;
+      scroll-margin-top: 160px;
+      position: relative;
+    }
+
+    #acerca {
+      scroll-margin-top: 160px;
+    }
+
+    .about-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 2rem;
+      box-shadow: 0 24px 64px rgba(0, 0, 0, 0.14);
+    }
+
+    .about-card h2 {
+      font-family: var(--font-display);
+      font-size: clamp(1.7rem, 3.5vw, 2.6rem);
+      font-weight: 400;
+      margin: 0.5rem 0 1rem;
+      color: var(--text);
+    }
+
+    .about-card p {
+      margin-top: 1rem;
+      color: var(--text-2);
+      line-height: 1.8;
+      max-width: 760px;
+    }
+
+    .about-card a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    .about-card a:hover {
+      text-decoration: underline;
     }
 
     .episodes-grid {
@@ -472,31 +524,13 @@
     .card p {
       font-size: .84rem;
       color: var(--text-2);
-      line-height: 1.65;
-      max-height: 5.5rem;
-      overflow-y: auto;
-      margin-bottom: 0.5rem;
+      line-height: 1.6;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      margin-bottom: 1rem;
     }
-
-    /* Scrollbar personalizada para la descripción */
-    .card p::-webkit-scrollbar {
-      width: 8px;
-    }
-
-    .card p::-webkit-scrollbar-track {
-      background: rgba(255, 255, 255, 0.05);
-      border-radius: 4px;
-    }
-
-    .card p::-webkit-scrollbar-thumb {
-      background: var(--text-2);
-      border-radius: 4px;
-    }
-
-    .card p::-webkit-scrollbar-thumb:hover {
-      background: var(--accent);
-    }
-
 
     .donate-btn {
       display: inline-flex;
@@ -1055,6 +1089,15 @@
     <div class="episodes-grid" id="grid"></div>
   </main>
 
+  <section class="about-section" id="acerca">
+    <div class="about-card">
+      <!-- <span class="hero-label">Acerca</span> -->
+      <h2>Hola, soy Eduardo Cabrera</h2>
+      <p>Este espacio es mi podcast de ideas, debates y documentales. Aquí comparto temas con interés crítico y una mirada que busca mover la conversación.</p>
+      <p>Conecta conmigo en <a href="https://www.linkedin.com/in/e-cabrera-blazquez/" target="_blank" rel="noopener">LinkedIn</a> o escríbeme a <a href="mailto:hola@eduardocabrera.com">ecabrerablazquez@gmail.com</a>.</p>
+    </div>
+  </section>
+
   <!-- MODAL DE REPRODUCCIÓN -->
   <div class="modal-overlay" id="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
     <div class="modal">
@@ -1140,7 +1183,8 @@
   </footer>
 
 
-  <script src="/assets/js/episodes.js"></script>
+  <!-- Cada vez que actualices tus episodios, cambia el número de versión ?v=... -->
+  <script src="assets/js/episodes.js?v=1.0.1"></script>
   <script>
     // ════════════════════════════════════════════════════════
     //  ESTADO
@@ -1151,6 +1195,8 @@
     // ════════════════════════════════════════════════════════
     //  UTILS
     // ════════════════════════════════════════════════════════
+    let lastFocusedElement;
+
     const fmt = d => new Date(d + 'T00:00:00')
       .toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
 
@@ -1159,18 +1205,7 @@
     const categories = () => [...new Set(EPISODES.map(e => e.category).filter(Boolean))];
 
     function scrollToGrid() {
-      // Pequeño retardo para asegurar que el DOM ha terminado de repintar los cards
-      setTimeout(() => {
-        const gridSection = document.querySelector('.grid-section');
-        const controls = document.getElementById('episodios');
-        if (gridSection && controls) {
-          // Calculamos la posición absoluta de la sección del grid
-          const absoluteY = gridSection.getBoundingClientRect().top + window.scrollY;
-          // Restamos la altura de la cabecera (65) y la de la zona de controles para que quede justo debajo
-          const targetY = absoluteY - 65 - controls.offsetHeight;
-          window.scrollTo({ top: targetY, behavior: 'smooth' });
-        }
-      }, 50);
+      document.querySelector('.grid-section')?.scrollIntoView({ behavior: 'smooth' });
     }
 
     // ════════════════════════════════════════════════════════
@@ -1302,6 +1337,7 @@
     //  MODAL
     // ════════════════════════════════════════════════════════
     function openModal(ep) {
+      lastFocusedElement = document.activeElement;
       document.getElementById('modal-ep').textContent = `Episodio ${String(ep.id).padStart(2, '0')}`;
       document.getElementById('modal-title').textContent = ep.title;
       document.getElementById('modal-desc').textContent = ep.description;
@@ -1329,6 +1365,10 @@
         `https://www.youtube.com/embed/${ep.youtubeId}?autoplay=1&rel=0&modestbranding=1`;
       document.getElementById('modal').classList.add('open');
       document.body.style.overflow = 'hidden';
+      
+      // Accesibilidad: ponemos el foco en el botón cerrar
+      setTimeout(() => document.getElementById('modal-close').focus(), 100);
+
       // Actualiza la URL para que sea compartible directamente
       history.replaceState(null, '', `?id=${ep.id}`);
     }
@@ -1341,7 +1381,7 @@
       history.replaceState(null, '', window.location.pathname);
       
       // Aseguramos que la cuadrícula quede perfectamente a la vista
-      scrollToGrid();
+      if (lastFocusedElement) lastFocusedElement.focus();
     }
 
     document.getElementById('modal-close').addEventListener('click', closeModal);
@@ -1404,6 +1444,24 @@
         scrollToGrid();
         history.pushState(null, '', '#episodios');
       });
+    }
+
+    const navAcerca = document.querySelector('nav a[href="#acerca"]');
+    if (navAcerca) {
+      navAcerca.addEventListener('click', e => {
+        e.preventDefault();
+        scrollToAcerca();
+      });
+    }
+
+    function scrollToAcerca() {
+      const target = document.getElementById('acerca');
+      if (!target) return;
+      // El pequeño retardo asegura que el scroll se ejecute tras cualquier renderizado pendiente
+      setTimeout(() => {
+        target.scrollIntoView({ behavior: 'smooth' });
+        history.pushState(null, '', '#acerca');
+      }, 50);
     }
 
     // ════════════════════════════════════════════════════════
@@ -1492,6 +1550,11 @@
     if (deepId) {
       const ep = EPISODES.find(e => e.id === deepId);
       if (ep) openModal(ep);
+    }
+
+    // Si la página se recarga con el anclaje #acerca, forzamos el scroll suave al cargar
+    if (window.location.hash === '#acerca') {
+      window.addEventListener('load', () => scrollToAcerca());
     }
   </script>
 
