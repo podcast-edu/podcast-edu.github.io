@@ -61,6 +61,15 @@
 
     html {
       scroll-behavior: smooth;
+      /* Ocultar barra en Firefox */
+      scrollbar-width: none;
+      /* Ocultar barra en IE y Edge antiguo */
+      -ms-overflow-style: none;
+    }
+
+    /* Ocultar barra en Chrome, Safari y navegadores basados en WebKit (Chrome, Brave, Edge actual) */
+    ::-webkit-scrollbar {
+      display: none;
     }
 
     body {
@@ -145,6 +154,7 @@
       display: flex;
       align-items: center;
       gap: 0.4rem;
+      cursor: pointer;
       transition: all .25s var(--ease);
     }
 
@@ -345,6 +355,7 @@
     .about-card a {
       color: var(--accent);
       text-decoration: none;
+      cursor: pointer;
     }
 
     .about-card a:hover {
@@ -524,12 +535,27 @@
     .card p {
       font-size: .84rem;
       color: var(--text-2);
+      line-height: 1.65;
+      max-height: 5.5rem;
+      overflow-y: auto;
       line-height: 1.6;
       display: -webkit-box;
       -webkit-line-clamp: 3;
       -webkit-box-orient: vertical;
       overflow: hidden;
       margin-bottom: 1rem;
+      scrollbar-width: thin; /* Firefox: restauramos barra fina */
+    }
+
+    /* Sobreescribimos el ocultamiento global solo para el párrafo de la card */
+    .card p::-webkit-scrollbar {
+      display: block;
+      width: 4px;
+    }
+
+    .card p::-webkit-scrollbar-thumb {
+      background: var(--border);
+      border-radius: 10px;
     }
 
     .donate-btn {
@@ -549,6 +575,7 @@
       text-transform: uppercase;
       letter-spacing: .05em;
       align-self: flex-start;
+      cursor: pointer;
     }
 
     .donate-btn:hover {
@@ -730,6 +757,21 @@
       font-size: .875rem;
       color: var(--text-2);
       line-height: 1.75;
+      max-height: 150px; /* Altura máxima antes de que aparezca el scroll */
+      overflow-y: auto;
+      scrollbar-width: thin; /* Firefox: barra fina */
+      scrollbar-color: var(--border) transparent; /* Firefox: color de la barra */
+    }
+
+    /* WebKit (Chrome, Safari, Edge): hacemos visible y estilizamos la barra del modal-desc */
+    .modal-desc::-webkit-scrollbar {
+      display: block; /* Anula el 'display: none' global */
+      width: 6px;
+    }
+
+    .modal-desc::-webkit-scrollbar-thumb {
+      background-color: var(--border);
+      border-radius: 10px;
     }
 
     .donate-btn-large {
@@ -748,6 +790,7 @@
       text-transform: uppercase;
       letter-spacing: .05em;
       align-self: flex-start;
+      cursor: pointer;
     }
 
     .donate-btn-large:hover {
