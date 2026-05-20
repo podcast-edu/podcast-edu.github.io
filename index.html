@@ -1094,7 +1094,7 @@
       <!-- <span class="hero-label">Acerca</span> -->
       <h2>Hola, soy Eduardo Cabrera</h2>
       <p>Este espacio es mi podcast de ideas, debates y documentales. Aquí comparto temas con interés crítico y una mirada que busca mover la conversación.</p>
-      <p>Conecta conmigo en <a href="https://www.linkedin.com/in/e-cabrera-blazquez/" target="_blank" rel="noopener">LinkedIn</a> o escríbeme a <a href="mailto:hola@eduardocabrera.com">ecabrerablazquez@gmail.com</a>.</p>
+      <p>Conecta conmigo en <a href="https://www.linkedin.com/in/e-cabrera-blazquez/" target="_blank" rel="noopener">LinkedIn</a> o <a href="#" class="open-contact-modal">envíame un mensaje directo aquí</a>.</p>
     </div>
   </section>
 
@@ -1172,6 +1172,37 @@
           Podrás añadir un mensaje personalizado en la pantalla de pago.<br>
           <span style="opacity: 0.8; display: inline-block; margin-top: 0.3rem;">Se aceptan <strong>Tarjetas de Crédito, Débito</strong> y saldo PayPal.</span>
         </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL DE CONTACTO -->
+  <div class="modal-overlay" id="contact-modal" role="dialog" aria-modal="true" aria-labelledby="contact-title" style="z-index: 600;">
+    <div class="modal" style="max-width: 420px; transform: scale(0.95);">
+      <div class="modal-header">
+        <h2 class="modal-title" id="contact-title">Enviarme un mensaje 📬</h2>
+        <button class="modal-close" id="contact-close" aria-label="Cerrar">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path d="M18 6 6 18M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+      <div class="modal-body" style="flex-direction: column; gap: 1.2rem; padding-bottom: 2rem;">
+        <form id="contact-form" style="display: flex; flex-direction: column; gap: 1rem; width: 100%;">
+          <div style="display: flex; flex-direction: column; gap: 0.4rem;">
+            <label for="contact-email" style="font-size: 0.8rem; color: var(--text-2);">Tu correo electrónico</label>
+            <input type="email" id="contact-email" name="email" required placeholder="tu@email.com" class="custom-amount-input">
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 0.4rem;">
+            <label for="contact-message" style="font-size: 0.8rem; color: var(--text-2);">Tu mensaje</label>
+            <textarea id="contact-message" name="message" required placeholder="¿En qué puedo ayudarte?" class="custom-amount-input" style="min-height: 100px; resize: vertical; padding-top: 0.75rem;"></textarea>
+          </div>
+          <button type="submit" class="donate-btn-large" id="send-contact-btn" style="width: 100%; justify-content: center; margin-top: 0.5rem;">
+            Enviar mensaje
+          </button>
+        </form>
+        <div id="contact-status" style="display: none; text-align: center; font-size: 0.85rem; padding: 1rem; border-radius: 4px;">
+        </div>
       </div>
     </div>
   </div>
@@ -1534,6 +1565,70 @@
       const url = finalAmount ? `https://paypal.me/ECABRERABLAZQUEZ/${finalAmount}` : 'https://paypal.me/ECABRERABLAZQUEZ';
       window.open(url, '_blank');
       closeDonateModal();
+    });
+
+    // ════════════════════════════════════════════════════════
+    //  MODAL CONTACTO
+    // ════════════════════════════════════════════════════════
+    const contactModal = document.getElementById('contact-modal');
+    const contactForm = document.getElementById('contact-form');
+    const contactStatus = document.getElementById('contact-status');
+
+    window.openContactModal = function() {
+      contactModal.classList.add('open');
+      document.body.style.overflow = 'hidden';
+      contactForm.style.display = 'flex';
+      contactStatus.style.display = 'none';
+      contactForm.reset();
+    };
+
+    function closeContactModal() {
+      contactModal.classList.remove('open');
+      if (!document.getElementById('modal').classList.contains('open') && 
+          !document.getElementById('donate-modal').classList.contains('open')) {
+        document.body.style.overflow = '';
+      }
+    }
+
+    document.getElementById('contact-close').addEventListener('click', closeContactModal);
+    contactModal.addEventListener('click', e => { if (e.target === contactModal) closeContactModal(); });
+
+    document.querySelectorAll('.open-contact-modal').forEach(btn => {
+      btn.addEventListener('click', e => {
+        e.preventDefault();
+        openContactModal();
+      });
+    });
+
+    contactForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn = document.getElementById('send-contact-btn');
+      const data = new FormData(contactForm);
+      
+      btn.disabled = true;
+      btn.textContent = 'Enviando...';
+
+      try {
+        const response = await fetch('https://formspree.io/f/xjgzgqvy', {
+          method: 'POST',
+          body: data,
+          headers: { 'Accept': 'application/json' }
+        });
+
+        if (response.ok) {
+          contactForm.style.display = 'none';
+          contactStatus.style.display = 'block';
+          contactStatus.innerHTML = '<span style="color: var(--accent);">¡Gracias! Tu mensaje ha sido enviado correctamente. Te responderé pronto.</span>';
+          setTimeout(closeContactModal, 3000);
+        } else {
+          throw new Error();
+        }
+      } catch (err) {
+        contactStatus.style.display = 'block';
+        contactStatus.innerHTML = '<span style="color: #ff4d4d;">Ups, algo salió mal. Por favor, inténtalo de nuevo más tarde.</span>';
+        btn.disabled = false;
+        btn.textContent = 'Enviar mensaje';
+      }
     });
 
     // ════════════════════════════════════════════════════════
