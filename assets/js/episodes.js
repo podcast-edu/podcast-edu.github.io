@@ -40,6 +40,16 @@ const EPISODES = [
     category: "debates",
     tags: ["Episodio y debate EP03"],
   },
+  {
+    id: 5,
+    title: "EP05: La Reciprocidad",
+    description: "Este texto reflexiona sobre la reciprocidad como un fenómeno complejo que trasciende el simple intercambio equitativo de bienes o favores. El autor sostiene que el verdadero equilibrio nace de dar aquello que uno es en lugar de esperar una devolución idéntica, advirtiendo sobre los peligros de medir las relaciones bajo una lógica contable o comercial.",
+    youtubeId: "ghI4_zvce7M",
+    date: "2025-05-21",
+    duration: "11:47",
+    category: "contenido",
+    tags: ["Episodio y debate EP05", "Social","Psicología"],
+  },
   // {
   //   id: x,
   //   title: "...",
