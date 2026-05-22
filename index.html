@@ -877,7 +877,11 @@
       }
 
       .grid-section {
-        padding: 0 0 4rem;
+        padding: 0 1.25rem 4rem;
+      }
+
+      .about-section {
+        padding: 2rem 1.25rem 4rem;
       }
 
       nav {
@@ -890,7 +894,6 @@
         padding: .75rem 1rem .75rem 2.75rem;
       }
 
-      /* Grid en columna única sin bordes laterales */
       .episodes-grid {
         grid-template-columns: 1fr;
       }
@@ -907,18 +910,26 @@
       /* Modal: centrado en móvil */
       .modal-overlay {
         padding: 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
       }
 
       .modal {
-        max-height: 90dvh;
+        width: 100%;
+        max-height: 85dvh;
         display: flex;
+        margin: 0 auto;
         flex-direction: column;
         overflow: hidden;
       }
 
       .modal-header {
-        padding: .85rem 1.25rem;
+        padding: 1.5rem 1.25rem .85rem;
         flex-shrink: 0;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
       }
 
       .modal-title {
@@ -933,15 +944,22 @@
       .modal-body {
         flex-direction: column;
         overflow-y: auto;
+        align-items: center;
+        text-align: center;
         -webkit-overflow-scrolling: touch;
         padding: 1rem 1.25rem 2rem;
         gap: .75rem;
       }
 
       .modal-meta {
-        flex-direction: row;
+        flex-direction: column;
+        justify-content: center;
         align-items: center;
-        gap: 1rem;
+        gap: 0.5rem;
+      }
+
+      #modal-tags {
+        justify-content: center;
       }
 
       .modal-meta span {
@@ -950,6 +968,9 @@
 
       /* Botón cerrar más grande para toque cómodo */
       .modal-close {
+        position: absolute;
+        top: 0.5rem;
+        right: 0.5rem;
         padding: .6rem;
       }
 
@@ -966,6 +987,10 @@
 
       .filter-btn {
         flex-shrink: 0;
+      }
+
+      footer {
+        padding: 2rem 1.25rem;
       }
     }
 
@@ -1154,10 +1179,6 @@
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 12px; height: 12px;"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>
             Invitamé a un café
           </a>
-          <a href="#" id="modal-youtube-link" target="_blank" rel="noopener" class="donate-btn-header" style="font-size: 0.7rem; padding: 0.3rem 0.65rem; border-radius: 4px; text-decoration: none; border-color: var(--text-3); color: var(--text-2) !important;">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 12px; height: 12px; opacity: 0.7;"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-            Ver en YouTube
-          </a>
           <button class="modal-close" id="modal-close" aria-label="Cerrar">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
               stroke-width="2">
@@ -1183,8 +1204,7 @@
         <div class="modal-meta">
           <span id="modal-date"></span>
           <span id="modal-duration"></span>
-          <div id="modal-tags"
-            style="display: flex; gap: 0.4rem; flex-wrap: wrap; justify-content: flex-end; margin-top: 0.2rem;"></div>
+          <div id="modal-tags" style="display: flex; gap: 0.4rem; flex-wrap: wrap; margin-top: 0.2rem;"></div>
         </div>
       </div>
     </div>
@@ -1439,12 +1459,8 @@
         });
       });
 
-      const ytLink = document.getElementById('modal-youtube-link');
-      ytLink.href = `https://www.youtube.com/watch?v=${ep.youtubeId}`;
-      ytLink.onclick = () => setTimeout(closeModal, 100);
-
-      // En móviles, si ya estamos en landscape, intentamos entrar en modo pantalla completa
-      if (window.innerWidth > window.innerHeight && window.innerWidth < 1024) {
+      // Solo en Android, si ya estamos en landscape, intentamos entrar en modo pantalla completa
+      if (/Android/i.test(navigator.userAgent) && window.innerWidth > window.innerHeight) {
         document.documentElement.requestFullscreen?.().catch(() => {});
       }
 
@@ -1517,8 +1533,8 @@
         const isPortrait = window.innerHeight > window.innerWidth;
         const modalOpen = document.getElementById('modal').classList.contains('open');
 
-        if (modalOpen && !isPortrait && window.innerWidth < 1024) {
-          // Al girar a landscape intentamos ocultar la interfaz del navegador
+        if (modalOpen && !isPortrait && /Android/i.test(navigator.userAgent)) {
+          // Solo en Android: al girar a landscape intentamos ocultar la interfaz del navegador
           document.documentElement.requestFullscreen?.().catch(() => {});
         }
 
