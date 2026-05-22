@@ -981,7 +981,7 @@
 
     /* ── LANDSCAPE FULLSCREEN (móvil en horizontal) ─── */
     /* Se activa en teléfonos girados: landscape + altura pequeña */
-    @media (orientation: landscape) and (max-height: 520px) {
+    @media (orientation: landscape) and (max-height: 600px) {
 
       /* El modal ocupa toda la pantalla */
       .modal-overlay.open {
@@ -1153,6 +1153,10 @@
           <a href="#" class="donate-btn-header open-donate-modal" style="font-size: 0.7rem; padding: 0.3rem 0.65rem; border-radius: 4px; text-decoration: none;">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 12px; height: 12px;"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>
             Invitamé a un café
+          </a>
+          <a href="#" id="modal-youtube-link" target="_blank" rel="noopener" class="donate-btn-header" style="font-size: 0.7rem; padding: 0.3rem 0.65rem; border-radius: 4px; text-decoration: none; border-color: var(--text-3); color: var(--text-2) !important;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 12px; height: 12px; opacity: 0.7;"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            Ver en YouTube
           </a>
           <button class="modal-close" id="modal-close" aria-label="Cerrar">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
@@ -1435,6 +1439,15 @@
         });
       });
 
+      const ytLink = document.getElementById('modal-youtube-link');
+      ytLink.href = `https://www.youtube.com/watch?v=${ep.youtubeId}`;
+      ytLink.onclick = () => setTimeout(closeModal, 100);
+
+      // En móviles, si ya estamos en landscape, intentamos entrar en modo pantalla completa
+      if (window.innerWidth > window.innerHeight && window.innerWidth < 1024) {
+        document.documentElement.requestFullscreen?.().catch(() => {});
+      }
+
       document.getElementById('modal-iframe').src =
         `https://www.youtube.com/embed/${ep.youtubeId}?autoplay=1&rel=0&modestbranding=1`;
       document.getElementById('modal').classList.add('open');
@@ -1448,6 +1461,11 @@
     }
 
     function closeModal() {
+      // Salir de pantalla completa si estaba activa
+      if (document.fullscreenElement) {
+        document.exitFullscreen?.().catch(() => {});
+      }
+
       document.getElementById('modal').classList.remove('open');
       document.getElementById('modal-iframe').src = '';
       document.body.style.overflow = '';
@@ -1464,6 +1482,15 @@
       if (e.target === document.getElementById('modal')) closeModal();
     });
     document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+    // Detectar si el usuario pulsa "Ver en YouTube" dentro del propio reproductor
+    window.addEventListener('blur', () => {
+      setTimeout(() => {
+        if (document.activeElement === document.getElementById('modal-iframe')) {
+          closeModal();
+        }
+      }, 100);
+    });
 
     // ════════════════════════════════════════════════════════
     //  BÚSQUEDA  (con debounce para no disparar en cada tecla)
@@ -1490,7 +1517,13 @@
         const isPortrait = window.innerHeight > window.innerWidth;
         const modalOpen = document.getElementById('modal').classList.contains('open');
 
+        if (modalOpen && !isPortrait && window.innerWidth < 1024) {
+          // Al girar a landscape intentamos ocultar la interfaz del navegador
+          document.documentElement.requestFullscreen?.().catch(() => {});
+        }
+
         if (modalOpen && isPortrait) {
+          if (document.fullscreenElement) document.exitFullscreen?.().catch(() => {});
           // Volvimos a portrait: scroll al inicio del contenido del modal
           const modalBody = document.querySelector('.modal-body');
           if (modalBody) modalBody.scrollTop = 0;
