@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="description" content="pod cast video youtube conocimiento">
   
   <!-- Evita que el navegador use una versión antigua del HTML en caché -->
@@ -485,6 +485,7 @@
       align-items: center;
       gap: .75rem;
       margin-bottom: .55rem;
+      flex-wrap: wrap;
     }
 
     .card-date {
@@ -544,10 +545,9 @@
       -webkit-box-orient: vertical;
       overflow: hidden;
       margin-bottom: 1rem;
-      scrollbar-width: thin; /* Firefox: restauramos barra fina */
+      scrollbar-width: thin;
     }
 
-    /* Sobreescribimos el ocultamiento global solo para el párrafo de la card */
     .card p::-webkit-scrollbar {
       display: block;
       width: 4px;
@@ -604,13 +604,13 @@
       font-style: italic;
     }
 
-    /* ── MODAL ───────────────────────────── */
+    /* ── MODAL (Base) ───────────────────────────── */
     .modal-overlay {
       position: fixed;
       inset: 0;
-      background: rgba(4, 7, 13, .60);
-      backdrop-filter: blur(4px);
-      -webkit-backdrop-filter: blur(4px);
+      background: rgba(4, 7, 13, .85);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
       z-index: 500;
       display: flex;
       align-items: center;
@@ -628,14 +628,14 @@
 
     .modal {
       width: 100%;
-      max-width: 720px;
+      max-width: 900px;
       max-height: 90vh;
       display: flex;
       flex-direction: column;
       overflow: hidden;
       background: var(--surface);
       border: 1px solid var(--border);
-      border-radius: 8px;
+      border-radius: 12px;
       transform: translateY(20px) scale(.98);
       transition: transform .3s var(--ease);
     }
@@ -645,7 +645,7 @@
     }
 
     .modal-header {
-      padding: 1rem 1.5rem;
+      padding: 1.25rem 1.5rem;
       display: flex;
       align-items: flex-start;
       justify-content: space-between;
@@ -655,7 +655,7 @@
     }
 
     .modal-ep {
-      font-size: .68rem;
+      font-size: .7rem;
       letter-spacing: .18em;
       text-transform: uppercase;
       color: var(--accent);
@@ -665,7 +665,7 @@
 
     .modal-title {
       font-family: var(--font-display);
-      font-size: 1.4rem;
+      font-size: 1.6rem;
       font-weight: 400;
       color: var(--text);
     }
@@ -675,12 +675,13 @@
       border: 1px solid var(--border);
       color: var(--text-2);
       cursor: pointer;
-      padding: .4rem;
+      padding: .5rem;
       display: flex;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
       transition: all .25s var(--ease);
+      border-radius: 6px;
     }
 
     .modal-close:hover {
@@ -689,8 +690,8 @@
     }
 
     .modal-close svg {
-      width: 18px;
-      height: 18px;
+      width: 20px;
+      height: 20px;
     }
 
     .video-wrap {
@@ -739,11 +740,12 @@
     }
 
     .modal-body {
-      padding: 1.25rem 1.5rem 1.5rem;
+      padding: 1.5rem;
       display: flex;
       gap: 2rem;
       align-items: flex-start;
       overflow-y: auto;
+      flex: 1;
     }
 
     .modal-desc-container {
@@ -754,18 +756,19 @@
     }
 
     .modal-desc {
-      font-size: .875rem;
+      font-size: .9rem;
       color: var(--text-2);
+      flex: 1;
       line-height: 1.75;
-      max-height: 150px; /* Altura máxima antes de que aparezca el scroll */
+      max-height: 200px;
       overflow-y: auto;
-      scrollbar-width: thin; /* Firefox: barra fina */
-      scrollbar-color: var(--border) transparent; /* Firefox: color de la barra */
+      scrollbar-width: thin;
+      scrollbar-color: var(--border) transparent;
+      padding-right: 0.5rem;
     }
 
-    /* WebKit (Chrome, Safari, Edge): hacemos visible y estilizamos la barra del modal-desc */
     .modal-desc::-webkit-scrollbar {
-      display: block; /* Anula el 'display: none' global */
+      display: block;
       width: 6px;
     }
 
@@ -807,14 +810,25 @@
       flex-shrink: 0;
       display: flex;
       flex-direction: column;
-      gap: .35rem;
+      gap: .5rem;
       align-items: flex-end;
+      background: var(--surface-2);
+      padding: 0.75rem 1rem;
+      border-radius: 8px;
     }
 
     .modal-meta span {
-      font-size: .72rem;
-      color: var(--text-3);
+      font-size: .75rem;
+      color: var(--text-2);
       letter-spacing: .05em;
+    }
+
+    #modal-tags {
+      display: flex;
+      gap: 0.4rem;
+      flex-wrap: wrap;
+      margin-top: 0.2rem;
+      justify-content: flex-end;
     }
 
     /* ── FOOTER ──────────────────────────── */
@@ -857,138 +871,100 @@
       .episodes-grid {
         grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
       }
+      .modal-body {
+        flex-direction: column;
+      }
+      .modal-meta {
+        align-items: flex-start;
+        width: 100%;
+      }
+      #modal-tags {
+        justify-content: flex-start;
+      }
     }
 
     @media (max-width: 640px) {
-
-      /* Layout general */
       .hero {
         padding: 2.5rem 1.25rem 2rem;
       }
-
       .controls {
         padding: 1.25rem 1.25rem 1.5rem;
         flex-direction: column;
         align-items: stretch;
       }
-
       .search-wrap {
         max-width: 100%;
       }
-
       .grid-section {
         padding: 0 1.25rem 4rem;
       }
-
       .about-section {
         padding: 2rem 1.25rem 4rem;
       }
-
       nav {
         display: none;
       }
-
-      /* Input: font-size 16px mínimo para evitar zoom automático en iOS */
       #search {
         font-size: 1rem;
         padding: .75rem 1rem .75rem 2.75rem;
       }
-
       .episodes-grid {
         grid-template-columns: 1fr;
       }
-
-      /* Card en mobile: layout horizontal si el título es corto */
       .card-body {
         padding: 1rem 1.25rem 1rem;
       }
-
       .card h2 {
         font-size: 1.1rem;
       }
-
-      /* Modal: centrado en móvil */
+      
+      /* Modal en móvil: adaptado pero visible */
       .modal-overlay {
         padding: 1rem;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        align-items: flex-end;
       }
-
       .modal {
+        max-height: 90dvh;
         width: 100%;
-        max-height: 85dvh;
-        display: flex;
-        margin: 0 auto;
-        flex-direction: column;
-        overflow: hidden;
+        border-radius: 16px 16px 12px 12px;
+        transform: translateY(100%);
+        transition: transform .35s var(--ease);
       }
-
+      .modal-overlay.open .modal {
+        transform: translateY(0);
+      }
       .modal-header {
-        padding: 1.5rem 1.25rem .85rem;
-        flex-shrink: 0;
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
+        padding: 1rem 1.25rem;
       }
-
       .modal-title {
-        font-size: 1.1rem;
+        font-size: 1.25rem;
       }
-
-      /* Video fijo arriba, info scrollable abajo */
-      .video-wrap {
-        flex-shrink: 0;
-      }
-
       .modal-body {
-        flex-direction: column;
-        overflow-y: auto;
-        align-items: center;
-        text-align: center;
-        -webkit-overflow-scrolling: touch;
-        padding: 1rem 1.25rem 2rem;
-        gap: .75rem;
+        padding: 1rem 1.25rem 1.5rem;
+        gap: 1rem;
       }
-
       .modal-meta {
-        flex-direction: column;
-        justify-content: center;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-between;
         align-items: center;
-        gap: 0.5rem;
       }
-
-      #modal-tags {
-        justify-content: center;
-      }
-
-      .modal-meta span {
-        font-size: .72rem;
-      }
-
-      /* Botón cerrar más grande para toque cómodo */
       .modal-close {
-        position: absolute;
-        top: 0.5rem;
-        right: 0.5rem;
-        padding: .6rem;
+        position: relative;
+        top: auto;
+        right: auto;
       }
-
-      /* Filtros: scroll horizontal en mobile */
       .filters {
         flex-wrap: nowrap;
         overflow-x: auto;
         padding-bottom: .25rem;
       }
-
       .filters::-webkit-scrollbar {
         display: none;
       }
-
       .filter-btn {
         flex-shrink: 0;
       }
-
       footer {
         padding: 2rem 1.25rem;
       }
@@ -998,71 +974,46 @@
       .hero h1 {
         font-size: 1.9rem;
       }
-
       .hero-desc {
         font-size: .9rem;
       }
     }
 
-    /* ── LANDSCAPE FULLSCREEN (móvil en horizontal) ─── */
-    /* Se activa en teléfonos girados: landscape + altura pequeña */
-    @media (orientation: landscape) and (max-height: 600px) {
-
-      /* El modal ocupa toda la pantalla */
+    /* Landscape móvil: fullscreen del video */
+    @media (hover: none) and (pointer: coarse) and (max-width: 1024px) and (orientation: landscape) and (max-height: 500px) {
       .modal-overlay.open {
         padding: 0;
         background: #000;
         backdrop-filter: none;
-        -webkit-backdrop-filter: none;
+        align-items: stretch;
       }
-
       .modal-overlay.open .modal {
         max-height: 100dvh;
         height: 100dvh;
         width: 100vw;
         border: none;
         border-radius: 0;
-        /* Anular la animación bottom-sheet del mobile portrait */
         transform: none !important;
         transition: none;
         display: flex;
         flex-direction: column;
       }
-
-      /* Ocultar cabecera y descripción — sólo queda el video */
       .modal-overlay.open .modal-header {
         display: none;
       }
-
       .modal-overlay.open .modal-body {
         display: none;
       }
-
-      /* El video llena el espacio disponible */
       .modal-overlay.open .video-wrap {
         flex: 1;
         aspect-ratio: unset;
       }
-
-      /* Mostrar el botón flotante de cerrar */
       .modal-overlay.open .landscape-close {
         display: flex;
       }
     }
 
-    /* Animación de entrada del modal en mobile (sube desde abajo) */
-    @media (max-width: 640px) {
-      .modal {
-        transform: translateY(100%);
-        transition: transform .35s var(--ease);
-      }
-
-      .modal-overlay.open .modal {
-        transform: translateY(0);
-      }
-    }
-
-    /* ── DONATE MODAL ────────────────────── */
+    /* Donaciones / Contacto modales pequeños */
     .donate-amounts {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
@@ -1143,13 +1094,8 @@
         <path d="m21 21-4.35-4.35" />
       </svg>
       <input type="text" id="search" placeholder="Buscar…" autocomplete="off" spellcheck="false">
-
     </div>
-
-    <!-- Botones de categoría: aparecen automáticamente cuando añadas categorías a los episodios -->
-    <div class="filters" id="filters">
-
-    </div>
+    <div class="filters" id="filters"></div>
   </div>
 
   <!-- GRID -->
@@ -1159,7 +1105,6 @@
 
   <section class="about-section" id="acerca">
     <div class="about-card">
-      <!-- <span class="hero-label">Acerca</span> -->
       <h2>Hola, soy Eduardo Cabrera</h2>
       <p>Este espacio es mi podcast de ideas, debates y documentales. Aquí comparto temas con interés crítico y una mirada que busca mover la conversación.</p>
       <p>Conecta conmigo en <a href="https://www.linkedin.com/in/e-cabrera-blazquez/" target="_blank" rel="noopener">LinkedIn</a> o <a href="#" class="open-contact-modal">envíame un mensaje directo aquí</a>.</p>
@@ -1180,8 +1125,7 @@
             Invitamé a un café
           </a>
           <button class="modal-close" id="modal-close" aria-label="Cerrar">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
-              stroke-width="2">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
               <path d="M18 6 6 18M6 6l12 12" />
             </svg>
           </button>
@@ -1191,10 +1135,8 @@
         <iframe id="modal-iframe" allowfullscreen
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share">
         </iframe>
-        <!-- Botón cerrar flotante: sólo aparece en landscape móvil -->
         <button class="landscape-close" id="landscape-close" aria-label="Cerrar vídeo">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
-            stroke-width="2">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
             <path d="M18 6 6 18M6 6l12 12" />
           </svg>
         </button>
@@ -1212,7 +1154,7 @@
 
   <!-- MODAL DE DONACIÓN -->
   <div class="modal-overlay" id="donate-modal" role="dialog" aria-modal="true" aria-labelledby="donate-title" style="z-index: 600;">
-    <div class="modal" style="max-width: 420px; transform: scale(0.95);">
+    <div class="modal" style="max-width: 420px;">
       <div class="modal-header">
         <h2 class="modal-title" id="donate-title">Invítame a un café ☕</h2>
         <button class="modal-close" id="donate-close" aria-label="Cerrar">
@@ -1245,7 +1187,7 @@
 
   <!-- MODAL DE CONTACTO -->
   <div class="modal-overlay" id="contact-modal" role="dialog" aria-modal="true" aria-labelledby="contact-title" style="z-index: 600;">
-    <div class="modal" style="max-width: 420px; transform: scale(0.95);">
+    <div class="modal" style="max-width: 420px;">
       <div class="modal-header">
         <h2 class="modal-title" id="contact-title">Enviarme un mensaje 📬</h2>
         <button class="modal-close" id="contact-close" aria-label="Cerrar">
@@ -1276,12 +1218,10 @@
 
   <!-- FOOTER -->
   <footer>
-    <p>© 2025 Nombre del Podcast &mdash; Todos los episodios en <a href="https://youtube.com/@tucanal" target="_blank"
+    <p>© 2025 Edu Things &mdash; Todos los episodios en <a href="https://youtube.com/@tucanal" target="_blank"
         rel="noopener">YouTube</a></p>
   </footer>
 
-
-  <!-- Cada vez que actualices tus episodios, cambia el número de versión ?v=... -->
   <script src="assets/js/episodes.js?v=1.0.1"></script>
   <script>
     // ════════════════════════════════════════════════════════
@@ -1325,27 +1265,17 @@
 
     // ════════════════════════════════════════════════════════
     //  RENDER FILTROS
-    //  (Sólo aparece el botón "Todos" hasta que añadas categorías)
     // ════════════════════════════════════════════════════════
     function renderFilters() {
       const cats = categories();
       const filtersEl = document.getElementById('filters');
-
       if (!cats.length) { filtersEl.style.display = 'none'; return; }
-
       filtersEl.style.display = 'flex';
       const all = [{ key: 'todos', label: 'Todos' }, ...cats.map(c => ({ key: c, label: c }))];
-
       filtersEl.innerHTML = all.map(f => {
-        const count = f.key === 'todos'
-          ? EPISODES.length
-          : EPISODES.filter(e => e.category === f.key).length;
-        return `<button class="filter-btn ${activeFilter === f.key ? 'active' : ''}"
-                        data-filter="${f.key}">
-          ${f.label}<span class="count-badge">${count}</span>
-        </button>`;
+        const count = f.key === 'todos' ? EPISODES.length : EPISODES.filter(e => e.category === f.key).length;
+        return `<button class="filter-btn ${activeFilter === f.key ? 'active' : ''}" data-filter="${f.key}">${f.label}<span class="count-badge">${count}</span></button>`;
       }).join('');
-
       filtersEl.querySelectorAll('.filter-btn').forEach(btn =>
         btn.addEventListener('click', () => {
           activeFilter = btn.dataset.filter;
@@ -1364,24 +1294,20 @@
     function renderGrid() {
       const grid = document.getElementById('grid');
       const filtered = getFiltered();
-
       if (!filtered.length) {
         grid.innerHTML = `<div class="empty-state"><p>No se encontraron episodios.</p></div>`;
         return;
       }
-
       grid.innerHTML = filtered.map((ep, i) => `
         <article class="card" data-id="${ep.id}" style="animation-delay:${i * .05}s" tabindex="0" role="button" aria-label="Ver ${ep.title}">
           <div class="card-thumb">
             <img src="${thumb(ep.youtubeId)}" alt="${ep.title}" loading="lazy" onerror="this.onerror=null;this.src='https://img.youtube.com/vi/${ep.youtubeId}/hqdefault.jpg';">
             <span class="ep-number">EP ${String(ep.id).padStart(2, '0')}</span>
             ${ep.duration ? `<span class="duration-badge">${ep.duration}</span>` : ''}
-            <div class="play-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-            </div>
+            <div class="play-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
           </div>
           <div class="card-body">
-            <div class="card-meta" style="flex-wrap: wrap;">
+            <div class="card-meta">
               <span class="card-date">${fmt(ep.date)}</span>
               ${ep.category ? `<span class="card-tag category-tag-filter" data-category="${ep.category}">${ep.category}</span>` : ''}
               ${(ep.tags || []).map(t => `<span class="card-tag secondary tag-filter" data-tag="${t}">${t}</span>`).join('')}
@@ -1395,29 +1321,22 @@
           </div>
         </article>
       `).join('');
-
       grid.querySelectorAll('.card').forEach(card => {
-        const open = () => {
-          const ep = EPISODES.find(e => e.id === parseInt(card.dataset.id));
-          if (ep) openModal(ep);
-        };
+        const open = () => { const ep = EPISODES.find(e => e.id === parseInt(card.dataset.id)); if (ep) openModal(ep); };
         card.addEventListener('click', open);
         card.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') open(); });
       });
-
       grid.querySelectorAll('.tag-filter').forEach(tagEl => {
         tagEl.addEventListener('click', e => {
           e.stopPropagation();
-          const tag = tagEl.dataset.tag;
-          searchQuery = tag;
-          document.getElementById('search').value = tag;
+          searchQuery = tagEl.dataset.tag;
+          document.getElementById('search').value = searchQuery;
           activeFilter = 'todos';
           renderFilters();
           renderGrid();
           scrollToGrid();
         });
       });
-
       grid.querySelectorAll('.category-tag-filter').forEach(tagEl => {
         tagEl.addEventListener('click', e => {
           e.stopPropagation();
@@ -1441,10 +1360,8 @@
       document.getElementById('modal-desc').textContent = ep.description;
       document.getElementById('modal-date').textContent = fmt(ep.date);
       document.getElementById('modal-duration').textContent = ep.duration || '';
-
       const modalTags = document.getElementById('modal-tags');
       modalTags.innerHTML = (ep.tags || []).map(t => `<span class="card-tag secondary tag-filter" data-tag="${t}">${t}</span>`).join('');
-
       modalTags.querySelectorAll('.tag-filter').forEach(tagEl => {
         tagEl.addEventListener('click', e => {
           e.stopPropagation();
@@ -1458,134 +1375,50 @@
           scrollToGrid();
         });
       });
-
-      // Solo en Android, si ya estamos en landscape, intentamos entrar en modo pantalla completa
       if (/Android/i.test(navigator.userAgent) && window.innerWidth > window.innerHeight) {
         document.documentElement.requestFullscreen?.().catch(() => {});
       }
-
-      document.getElementById('modal-iframe').src =
-        `https://www.youtube.com/embed/${ep.youtubeId}?autoplay=1&rel=0&modestbranding=1`;
+      document.getElementById('modal-iframe').src = `https://www.youtube.com/embed/${ep.youtubeId}?autoplay=1&rel=0&modestbranding=1`;
       document.getElementById('modal').classList.add('open');
       document.body.style.overflow = 'hidden';
-      
-      // Accesibilidad: ponemos el foco en el botón cerrar
       setTimeout(() => document.getElementById('modal-close').focus(), 100);
-
-      // Actualiza la URL para que sea compartible directamente
       history.replaceState(null, '', `?id=${ep.id}`);
     }
 
     function closeModal() {
-      // Salir de pantalla completa si estaba activa
-      if (document.fullscreenElement) {
-        document.exitFullscreen?.().catch(() => {});
-      }
-
+      if (document.fullscreenElement) document.exitFullscreen?.().catch(() => {});
       document.getElementById('modal').classList.remove('open');
       document.getElementById('modal-iframe').src = '';
       document.body.style.overflow = '';
-      // Limpia la URL al cerrar
       history.replaceState(null, '', window.location.pathname);
-      
-      // Aseguramos que la cuadrícula quede perfectamente a la vista
       if (lastFocusedElement) lastFocusedElement.focus();
     }
 
     document.getElementById('modal-close').addEventListener('click', closeModal);
     document.getElementById('landscape-close').addEventListener('click', closeModal);
-    document.getElementById('modal').addEventListener('click', e => {
-      if (e.target === document.getElementById('modal')) closeModal();
-    });
+    document.getElementById('modal').addEventListener('click', e => { if (e.target === document.getElementById('modal')) closeModal(); });
+    document.querySelector('.modal').addEventListener('click', e => e.stopPropagation());
     document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 
-    // Detectar si el usuario pulsa "Ver en YouTube" dentro del propio reproductor
-    window.addEventListener('blur', () => {
-      setTimeout(() => {
-        if (document.activeElement === document.getElementById('modal-iframe')) {
-          closeModal();
-        }
-      }, 100);
-    });
-
     // ════════════════════════════════════════════════════════
-    //  BÚSQUEDA  (con debounce para no disparar en cada tecla)
+    //  BÚSQUEDA
     // ════════════════════════════════════════════════════════
     let searchTimer;
     document.getElementById('search').addEventListener('input', e => {
       clearTimeout(searchTimer);
       searchTimer = setTimeout(() => {
         searchQuery = e.target.value;
-        if (searchQuery.trim() !== '') {
-          activeFilter = 'todos';
-          renderFilters();
-        }
+        if (searchQuery.trim() !== '') activeFilter = 'todos';
+        renderFilters();
         renderGrid();
       }, 200);
     });
 
     // ════════════════════════════════════════════════════════
-    //  ORIENTACIÓN  ── Gestión del giro de pantalla en móvil
+    //  NAVEGACIÓN
     // ════════════════════════════════════════════════════════
-    function onOrientationChange() {
-      // Esperar a que el navegador termine de recalcular dimensiones
-      setTimeout(() => {
-        const isPortrait = window.innerHeight > window.innerWidth;
-        const modalOpen = document.getElementById('modal').classList.contains('open');
-
-        if (modalOpen && !isPortrait && /Android/i.test(navigator.userAgent)) {
-          // Solo en Android: al girar a landscape intentamos ocultar la interfaz del navegador
-          document.documentElement.requestFullscreen?.().catch(() => {});
-        }
-
-        if (modalOpen && isPortrait) {
-          if (document.fullscreenElement) document.exitFullscreen?.().catch(() => {});
-          // Volvimos a portrait: scroll al inicio del contenido del modal
-          const modalBody = document.querySelector('.modal-body');
-          if (modalBody) modalBody.scrollTop = 0;
-        }
-      }, 200);
-    }
-
-    // screen.orientation es más fiable en Android Chrome
-    if (window.screen && window.screen.orientation) {
-      window.screen.orientation.addEventListener('change', onOrientationChange);
-    } else {
-      // Fallback para Safari y navegadores antiguos
-      window.addEventListener('orientationchange', onOrientationChange);
-    }
-
-    // ════════════════════════════════════════════════════════
-    //  MENÚ NAVEGACIÓN
-    // ════════════════════════════════════════════════════════
-    const navEpisodios = document.querySelector('a[href="#episodios"]');
-    if (navEpisodios) {
-      navEpisodios.addEventListener('click', e => {
-        e.preventDefault();
-        // Si hay un filtro de búsqueda, opcionalmente podrías limpiarlo, o simplemente llevar a los episodios actuales.
-        // Aquí solo hacemos scroll hacia ellos.
-        scrollToGrid();
-        history.pushState(null, '', '#episodios');
-      });
-    }
-
-    const navAcerca = document.querySelector('nav a[href="#acerca"]');
-    if (navAcerca) {
-      navAcerca.addEventListener('click', e => {
-        e.preventDefault();
-        scrollToAcerca();
-      });
-    }
-
-    function scrollToAcerca() {
-      const target = document.getElementById('acerca');
-      if (!target) return;
-      // El pequeño retardo asegura que el scroll se ejecute tras cualquier renderizado pendiente
-      setTimeout(() => {
-        target.scrollIntoView({ behavior: 'smooth' });
-        history.pushState(null, '', '#acerca');
-      }, 50);
-    }
+    document.querySelector('a[href="#episodios"]')?.addEventListener('click', e => { e.preventDefault(); scrollToGrid(); history.pushState(null, '', '#episodios'); });
+    document.querySelector('nav a[href="#acerca"]')?.addEventListener('click', e => { e.preventDefault(); document.getElementById('acerca')?.scrollIntoView({ behavior: 'smooth' }); history.pushState(null, '', '#acerca'); });
 
     // ════════════════════════════════════════════════════════
     //  MODAL DONACIÓN
@@ -1597,67 +1430,14 @@
     const customContainer = document.getElementById('custom-amount-container');
     const customInput = document.getElementById('custom-amount');
     const confirmDonate = document.getElementById('confirm-donate-btn');
-
-    window.openDonateModal = function() {
-      donateModal.classList.add('open');
-      document.body.style.overflow = 'hidden';
-      selectedAmount = 3;
-      customContainer.style.display = 'none';
-      customInput.value = '';
-      updateAmountSelection();
-    };
-
-    function closeDonateModal() {
-      donateModal.classList.remove('open');
-      if (!document.getElementById('modal').classList.contains('open')) {
-        document.body.style.overflow = '';
-      }
-    }
-
+    window.openDonateModal = function() { donateModal.classList.add('open'); document.body.style.overflow = 'hidden'; selectedAmount = 3; customContainer.style.display = 'none'; customInput.value = ''; updateAmountSelection(); };
+    function closeDonateModal() { donateModal.classList.remove('open'); if (!document.getElementById('modal').classList.contains('open')) document.body.style.overflow = ''; }
     donateClose.addEventListener('click', closeDonateModal);
-    donateModal.addEventListener('click', e => {
-      if (e.target === donateModal) closeDonateModal();
-    });
-
-    document.querySelectorAll('.open-donate-modal').forEach(btn => {
-      btn.addEventListener('click', e => {
-        e.preventDefault();
-        e.stopPropagation();
-        openDonateModal();
-      });
-    });
-
-    function updateAmountSelection() {
-      amountBtns.forEach(btn => {
-        if (btn.dataset.val == selectedAmount || (btn.id === 'btn-custom-amount' && selectedAmount === 'custom')) {
-          btn.classList.add('selected');
-        } else {
-          btn.classList.remove('selected');
-        }
-      });
-    }
-
-    amountBtns.forEach(btn => {
-      btn.addEventListener('click', () => {
-        if (btn.id === 'btn-custom-amount') {
-          selectedAmount = 'custom';
-          customContainer.style.display = 'block';
-          customInput.focus();
-        } else {
-          selectedAmount = btn.dataset.val;
-          customContainer.style.display = 'none';
-        }
-        updateAmountSelection();
-      });
-    });
-
-    confirmDonate.addEventListener('click', () => {
-      let finalAmount = selectedAmount === 'custom' ? customInput.value : selectedAmount;
-      if (!finalAmount || finalAmount <= 0) finalAmount = '';
-      const url = finalAmount ? `https://paypal.me/ECABRERABLAZQUEZ/${finalAmount}` : 'https://paypal.me/ECABRERABLAZQUEZ';
-      window.open(url, '_blank');
-      closeDonateModal();
-    });
+    donateModal.addEventListener('click', e => { if (e.target === donateModal) closeDonateModal(); });
+    document.querySelectorAll('.open-donate-modal').forEach(btn => btn.addEventListener('click', e => { e.preventDefault(); e.stopPropagation(); openDonateModal(); }));
+    function updateAmountSelection() { amountBtns.forEach(btn => btn.classList.remove('selected')); if (selectedAmount === 'custom') document.getElementById('btn-custom-amount').classList.add('selected'); else amountBtns.forEach(btn => { if (btn.dataset.val == selectedAmount) btn.classList.add('selected'); }); }
+    amountBtns.forEach(btn => btn.addEventListener('click', () => { if (btn.id === 'btn-custom-amount') { selectedAmount = 'custom'; customContainer.style.display = 'block'; customInput.focus(); } else { selectedAmount = btn.dataset.val; customContainer.style.display = 'none'; } updateAmountSelection(); }));
+    confirmDonate.addEventListener('click', () => { let finalAmount = selectedAmount === 'custom' ? customInput.value : selectedAmount; if (!finalAmount || finalAmount <= 0) finalAmount = ''; window.open(finalAmount ? `https://paypal.me/ECABRERABLAZQUEZ/${finalAmount}` : 'https://paypal.me/ECABRERABLAZQUEZ', '_blank'); closeDonateModal(); });
 
     // ════════════════════════════════════════════════════════
     //  MODAL CONTACTO
@@ -1665,86 +1445,41 @@
     const contactModal = document.getElementById('contact-modal');
     const contactForm = document.getElementById('contact-form');
     const contactStatus = document.getElementById('contact-status');
-
-    window.openContactModal = function() {
-      contactModal.classList.add('open');
-      document.body.style.overflow = 'hidden';
-      contactForm.style.display = 'flex';
-      contactStatus.style.display = 'none';
-      contactForm.reset();
-    };
-
-    function closeContactModal() {
-      contactModal.classList.remove('open');
-      if (!document.getElementById('modal').classList.contains('open') && 
-          !document.getElementById('donate-modal').classList.contains('open')) {
-        document.body.style.overflow = '';
-      }
-    }
-
+    window.openContactModal = function() { contactModal.classList.add('open'); document.body.style.overflow = 'hidden'; contactForm.style.display = 'flex'; contactStatus.style.display = 'none'; contactForm.reset(); };
+    function closeContactModal() { contactModal.classList.remove('open'); if (!document.getElementById('modal').classList.contains('open') && !donateModal.classList.contains('open')) document.body.style.overflow = ''; }
     document.getElementById('contact-close').addEventListener('click', closeContactModal);
     contactModal.addEventListener('click', e => { if (e.target === contactModal) closeContactModal(); });
-
-    document.querySelectorAll('.open-contact-modal').forEach(btn => {
-      btn.addEventListener('click', e => {
-        e.preventDefault();
-        openContactModal();
-      });
-    });
-
+    document.querySelectorAll('.open-contact-modal').forEach(btn => btn.addEventListener('click', e => { e.preventDefault(); openContactModal(); }));
     contactForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       const btn = document.getElementById('send-contact-btn');
       const data = new FormData(contactForm);
-      
-      btn.disabled = true;
-      btn.textContent = 'Enviando...';
-
+      btn.disabled = true; btn.textContent = 'Enviando...';
       try {
-        const response = await fetch('https://formspree.io/f/xjgzgqvy', {
-          method: 'POST',
-          body: data,
-          headers: { 'Accept': 'application/json' }
-        });
-
+        const response = await fetch('https://formspree.io/f/xjgzgqvy', { method: 'POST', body: data, headers: { 'Accept': 'application/json' } });
         if (response.ok) {
           contactForm.style.display = 'none';
           contactStatus.style.display = 'block';
           contactStatus.innerHTML = '<span style="color: var(--accent);">¡Gracias! Tu mensaje ha sido enviado correctamente. Te responderé pronto.</span>';
           setTimeout(closeContactModal, 3000);
-        } else {
-          throw new Error();
-        }
+        } else throw new Error();
       } catch (err) {
         contactStatus.style.display = 'block';
         contactStatus.innerHTML = '<span style="color: #ff4d4d;">Ups, algo salió mal. Por favor, inténtalo de nuevo más tarde.</span>';
-        btn.disabled = false;
-        btn.textContent = 'Enviar mensaje';
+        btn.disabled = false; btn.textContent = 'Enviar mensaje';
       }
     });
 
     // ════════════════════════════════════════════════════════
-    //  INIT
+    //  INIT & DEEP LINK
     // ════════════════════════════════════════════════════════
     renderFilters();
     renderGrid();
-
-    // ════════════════════════════════════════════════════════
-    //  DEEP LINK  ── ?id=1 abre el episodio directamente
-    // ════════════════════════════════════════════════════════
     const params = new URLSearchParams(window.location.search);
     const deepId = parseInt(params.get('id'));
-    if (deepId) {
-      const ep = EPISODES.find(e => e.id === deepId);
-      if (ep) openModal(ep);
-    }
-
-    // Si la página se recarga con el anclaje #acerca, forzamos el scroll suave al cargar
-    if (window.location.hash === '#acerca') {
-      window.addEventListener('load', () => scrollToAcerca());
-    }
+    if (deepId) { const ep = EPISODES.find(e => e.id === deepId); if (ep) openModal(ep); }
+    if (window.location.hash === '#acerca') window.addEventListener('load', () => document.getElementById('acerca')?.scrollIntoView({ behavior: 'smooth' }));
   </script>
-
 </body>
 
 </html>
