@@ -1471,6 +1471,77 @@
     });
 
     // ════════════════════════════════════════════════════════
+//  FULLSCREEN Y ORIENTATION LOCK PARA ANDROID
+// ════════════════════════════════════════════════════════
+let isFullscreen = false;
+
+function handleFullscreenChange() {
+  const isCurrentlyFullscreen = !!document.fullscreenElement;
+  
+  if (isCurrentlyFullscreen && !isFullscreen) {
+    // Entró en pantalla completa
+    isFullscreen = true;
+    
+    // Intentar bloquear orientación a landscape
+    if (screen.orientation && screen.orientation.lock) {
+      screen.orientation.lock('landscape').catch(err => {
+        console.warn('No se pudo bloquear orientación:', err);
+        // Mostrar mensaje amigable si no se pudo bloquear
+        showOrientationHint();
+      });
+    } else {
+      showOrientationHint();
+    }
+  } 
+  else if (!isCurrentlyFullscreen && isFullscreen) {
+    // Salió de pantalla completa
+    isFullscreen = false;
+    
+    // Desbloquear orientación
+    if (screen.orientation && screen.orientation.unlock) {
+      screen.orientation.unlock();
+    }
+  }
+}
+
+function showOrientationHint() {
+  // Solo mostrar hint si el modal está abierto y estamos en portrait en móvil
+  const modalOpen = document.getElementById('modal').classList.contains('open');
+  const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+  const isPortrait = window.innerHeight > window.innerWidth;
+  
+  if (modalOpen && isMobile && isPortrait) {
+    // Crear hint temporal si no existe
+    let hint = document.getElementById('orientation-hint');
+    if (!hint) {
+      hint = document.createElement('div');
+      hint.id = 'orientation-hint';
+      hint.innerHTML = `
+        <div style="position: fixed; bottom: 20px; left: 20px; right: 20px; background: rgba(0,0,0,0.85); backdrop-filter: blur(10px); color: white; padding: 12px 20px; border-radius: 40px; text-align: center; z-index: 10000; font-family: sans-serif; font-size: 14px; border-left: 4px solid #C9A84C;">
+          🔄 Gira tu dispositivo a <strong>horizontal (landscape)</strong> para mejor experiencia
+          <button id="close-hint" style="background: none; border: none; color: #C9A84C; margin-left: 10px; cursor: pointer;">✕</button>
+        </div>
+      `;
+      document.body.appendChild(hint);
+      document.getElementById('close-hint')?.addEventListener('click', () => hint.remove());
+      
+      // Auto ocultar después de 5 segundos
+      setTimeout(() => hint.remove(), 5000);
+    }
+  }
+}
+
+// Detectar cambios de fullscreen en el documento
+document.addEventListener('fullscreenchange', handleFullscreenChange);
+
+// También detectar cambios de orientación para ocultar hint automáticamente
+window.addEventListener('resize', () => {
+  const hint = document.getElementById('orientation-hint');
+  if (hint && window.innerWidth > window.innerHeight) {
+    hint.remove();
+  }
+});
+    // ════════════════════════════════════════════════════════
     //  INIT & DEEP LINK
     // ════════════════════════════════════════════════════════
     renderFilters();
