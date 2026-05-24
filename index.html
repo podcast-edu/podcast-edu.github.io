@@ -1293,7 +1293,7 @@
     // ════════════════════════════════════════════════════════
     function renderGrid() {
       const grid = document.getElementById('grid');
-      const filtered = getFiltered();
+      const filtered = getFiltered().reverse();
       if (!filtered.length) {
         grid.innerHTML = `<div class="empty-state"><p>No se encontraron episodios.</p></div>`;
         return;

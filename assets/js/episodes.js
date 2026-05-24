@@ -60,6 +60,16 @@ const EPISODES = [
     category: "debates",
     tags: ["Episodio y debate EP05"],
   },
+   {
+    id: 7,
+    title: "EP07: Frases y proverbios",
+    description: "Recopilación de frases y proverbios. Se puede decir que es una primera parte de nuchos más capítulos para abordar todo el contenido interesante. Piensen solo en riqueza del refranero español. Algo que nisiquiera hemos tocado.",
+    youtubeId: "nnQVWtyBHsw",
+    date: "2025-05-24",
+    duration: "05:40",
+    category: "contenido",
+    tags: ["Frases y proverbios","Existencial"],
+  },
   // {
   //   id: x,
   //   title: "...",
