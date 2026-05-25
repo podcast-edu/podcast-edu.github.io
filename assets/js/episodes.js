@@ -8,7 +8,7 @@ const EPISODES = [
     date: "2025-05-15",
     duration: "06:55",
     category: "contenido",
-    tags: ["Episodio y debate EP01", "existencial"],
+    tags: ["Episodio y debate EP01", "existencial","todo el contenido"],
   },
   {
     id: 2,
@@ -18,7 +18,7 @@ const EPISODES = [
     date: "2025-05-15",
     duration: "06:40",
     category: "debates",
-    tags: ["Episodio y debate EP01"],
+    tags: ["Episodio y debate EP01", "debates","todo el contenido"],
   },
   {
     id: 3,
@@ -28,7 +28,7 @@ const EPISODES = [
     date: "2025-05-19",
     duration: "09:49",
     category: "contenido",
-    tags: ["Episodio y debate EP03", "documental"],
+    tags: ["Episodio y debate EP03", "documental","existencial","todo el contenido"],
   },
   {
     id: 4,
@@ -38,7 +38,7 @@ const EPISODES = [
     date: "2025-05-20",
     duration: "06:33",
     category: "debates",
-    tags: ["Episodio y debate EP03"],
+    tags: ["Episodio y debate EP03", "debates","todo el contenido"],
   },
   {
     id: 5,
@@ -48,7 +48,7 @@ const EPISODES = [
     date: "2025-05-21",
     duration: "11:47",
     category: "contenido",
-    tags: ["Episodio y debate EP05", "Social","Psicología"],
+    tags: ["Episodio y debate EP05", "Social","Psicología","todo el contenido"],
   },
   {
     id: 6,
@@ -58,7 +58,7 @@ const EPISODES = [
     date: "2025-05-22",
     duration: "05:27",
     category: "debates",
-    tags: ["Episodio y debate EP05"],
+    tags: ["Episodio y debate EP05", "Social","Psicología","debates","todo el contenido"],
   },
    {
     id: 7,
@@ -68,7 +68,7 @@ const EPISODES = [
     date: "2025-05-24",
     duration: "05:40",
     category: "contenido",
-    tags: ["Frases y proverbios","Existencial"],
+    tags: ["Frases y proverbios","Existencial","motivación","todo el contenido"],
   },
   // {
   //   id: x,
