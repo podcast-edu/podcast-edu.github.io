@@ -437,12 +437,12 @@
 
     /* ── ACERCA ── */
     #acerca {
-      padding-top: 2rem;
+      padding-top: 8rem;
       padding-bottom: 2rem;
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 2.5rem;
-      align-items: center;
+      align-items: start;
       max-height: 90vh;
       overflow: hidden;
     }
@@ -507,6 +507,9 @@
       color: var(--muted);
       line-height: 1.5;
       margin-bottom: 0.6rem;
+    }
+    .about-content .section-label {
+      margin-top: -1rem; /* Ajuste para subir el label */
       font-size: .9rem;
     }
     .about-content p strong { color: var(--text); font-weight: 500; }
