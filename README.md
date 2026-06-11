@@ -61,4 +61,4 @@ Para cualquier pregunta o comentario, puedes contactar a Eduardo Cabrera a trav�
 
 ---
 
-¡Gracias por visitar Edu Things - Podcast!
+¡Gracias por visitar Edu Things. - Podcast!
