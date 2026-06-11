@@ -70,6 +70,16 @@ const EPISODES = [
     category: "contenido",
     tags: ["Frases y proverbios","Existencial","motivación","todo el contenido"],
   },
+  {
+    id: 8,
+    title: "EP08: El cuento de edu",
+    description: "La vida es sencilla. Nosotros la complicamos",
+    youtubeId: "qGl2t-nips0",
+    date: "2025-05-24",
+    duration: "03:18",
+    category: "contenido",
+    tags: ["Relatos","Cuentos","motivación","todo el contenido"],
+  },
   // {
   //   id: x,
   //   title: "...",
